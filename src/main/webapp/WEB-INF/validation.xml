@@ -1,0 +1,41 @@
+<!DOCTYPE form-validation PUBLIC
+        "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.3.0//EN"
+        "C:\Users\User\eclipse-workspace1\StrutsValidationExample\src\main\webapp\WEB-INF\dtd\validator_1_3_0.dtd">
+
+<form-validation>
+    <formset>
+        <form name="userRegisterForm">
+            <field property="firstName" depends="required,mask">
+                <msg name="required" key="error.user.firstName.required" />
+                <msg name="mask" key="error.user.firstName.invalid" />
+                <var>
+                    <var-name>mask</var-name>
+                    <var-value>^[a-zA-Z]+$</var-value>
+                </var>
+            </field>
+
+            <field property="lastName" depends="required,mask">
+                <msg name="required" key="error.user.lastName.required" />
+                <msg name="mask" key="error.user.lastName.invalid" />
+
+                <var>
+                    <var-name>mask</var-name>
+                    <var-value>^[a-zA-Z]+$</var-value> <!-- Only allows letters -->
+                </var>
+            </field>
+
+            <field property="email" depends="required,email,mask">
+                <msg name="required" key="error.user.email.required" />
+                <msg name="email" key="error.user.email.invalid" />
+                <msg name="mask" key="error.user.email.invalid" /> <!-- Add mask error message -->
+
+                <var>
+                    <var-name>mask</var-name>
+                    <var-value>^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$</var-value> <!-- Regex for valid email format -->
+                </var>
+            </field>
+
+            
+        </form>
+    </formset>
+</form-validation>

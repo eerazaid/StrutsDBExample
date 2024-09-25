@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+"http://struts.apache.org/dtds/struts-config_1_3.dtd">
+
+<struts-config>
+    <form-beans>
+        <form-bean name="userRegisterForm" type="com.jwt.struts.form.UserRegisterForm"/>
+    </form-beans>
+    <action-mappings>
+        <action path="/userList" type="com.jwt.struts.action.UserListAction">
+            <forward name="success" path="/userList.jsp"/>
+        </action>
+        <action path="/addUser" type="com.jwt.struts.action.UserAddAction"
+                name="userRegisterForm" scope="request" input="/userList.jsp">
+            <forward name="success" path="/userList.jsp"/>   
+                        <forward name="input" path="/userList.do"/>     
+              
+        </action>
+        <action path="/updateUser" type="com.jwt.struts.action.UserEditAction"
+                name="userRegisterForm" scope="request" input="/updateUser.jsp">
+            <forward name="success" path="/userList.do"/>
+            <forward name="edit" path="/updateUser.jsp"/>
+             <forward name="editfailure" path="/updateUser.do"/>
+            
+            
+        </action>
+        <action path="/deleteUser" type="com.jwt.struts.action.UserDeleteAction">
+            <forward name="success" path="/userList.do"/>
+        </action>
+    </action-mappings>
+    <message-resources parameter="com.jwt.struts.action.ApplicationResource"/>
+</struts-config>

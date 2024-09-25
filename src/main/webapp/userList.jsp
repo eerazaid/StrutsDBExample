@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>User List 123</title>
+    <title>User List test</title>
 </head>
 <body>
     <h2>User List</h2>

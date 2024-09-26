@@ -8,16 +8,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>User List test 123</title>
+    <title>User List</title>
 </head>
+
+<script type="text/javascript">
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this user?");
+        }
+    </script>
 <body>
     <h2>User List</h2>
+    
+	<form action="addUser.jsp" method="get">
+		<input type="submit" value="Add new user">
+	</form><br>
+    
     <table border="1">
         <tr>
             <th>ID</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
+            <th>Password</th>
             <th>Actions</th>
         </tr>
         <%
@@ -30,15 +42,16 @@
             <td><%= user.getFirstName() %></td>
             <td><%= user.getLastName() %></td>
             <td><%= user.getEmail() %></td>
+            <td><%= user.getPassword() %></td>
             <td>
                 <form action="updateUser.do" method="get" style="display:inline;">
                     <input type="hidden" name="id" value="<%= user.getId() %>"/>
                     <input type="submit" value="Edit"/>
                 </form>
-                <form action="deleteUser.do" method="post" style="display:inline;">
-                    <input type="hidden" name="id" value="<%= user.getId() %>"/>
-                    <input type="submit" value="Delete"/>
-                </form>
+                <form action="deleteUser.do" method="post" style="display:inline;" onsubmit="return confirmDelete();">
+		            <input type="hidden" name="id" value="<%= user.getId() %>"/>
+		            <input type="submit" value="Delete"/>
+		        </form>
             </td>
         </tr>
         <%
@@ -50,32 +63,6 @@
     </table>
     <br>
 
-    <h3>Add New User</h3>
-    <div style="color:red">
-        <html:errors />
-    </div>
-
-    <html:form action="/addUser">
-        
-        <label>
-            <bean:message key="label.user.firstName" /> :
-            <html:text property="firstName" size="25" />
-        </label>
-        <br>
-        <label>
-            <bean:message key="label.user.lastName" /> :
-            <html:text property="lastName" size="25" />
-        </label>
-        <br>
-        <label>
-            <bean:message key="label.user.email" /> :
-            <html:text property="email" size="25" />
-        </label>
-        <br>
-        <br>
-        <html:submit>
-            <bean:message key="label.user.button.submit" />
-        </html:submit>
-    </html:form>
+    
 </body>
 </html>

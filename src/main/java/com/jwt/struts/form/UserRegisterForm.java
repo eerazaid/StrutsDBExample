@@ -1,24 +1,24 @@
 package com.jwt.struts.form;
 
 import javax.servlet.http.HttpServletRequest;
-import org.apache.struts.validator.ValidatorForm;
-
-
 import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionMapping;
 
 public class UserRegisterForm extends ActionForm {
     private int id;
     private String firstName;
     private String lastName;
     private String email;
-    
+    private String password;
+    private String confirmPassword;
+
     @Override
-    public void reset(org.apache.struts.action.ActionMapping mapping, javax.servlet.http.HttpServletRequest request) {
+    public void reset(org.apache.struts.action.ActionMapping mapping, HttpServletRequest request) {
         // Reset form fields
         this.firstName = "";
         this.lastName = "";
         this.email = "";
+        this.password = "";
+        this.confirmPassword = "";
     }
 
     public int getId() {
@@ -51,5 +51,21 @@ public class UserRegisterForm extends ActionForm {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }

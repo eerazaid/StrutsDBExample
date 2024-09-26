@@ -12,14 +12,14 @@
             <forward name="success" path="/userList.jsp"/>
         </action>
         <action path="/addUser" type="com.jwt.struts.action.UserAddAction"
-                name="userRegisterForm" scope="request" input="/userList.jsp">
-            <forward name="success" path="/userList.jsp"/>   
-                        <forward name="input" path="/userList.do"/>     
+                name="userRegisterForm" scope="request" input="/addUser.jsp">
+            <forward name="success" redirect="true" path="/userList.jsp"/>   
+            <forward name="add" path="/addUser.jsp"/>   
               
         </action>
         <action path="/updateUser" type="com.jwt.struts.action.UserEditAction"
                 name="userRegisterForm" scope="request" input="/updateUser.jsp">
-            <forward name="success" path="/userList.do"/>
+            <forward name="success" redirect="true" path="/userList.do"/>
             <forward name="edit" path="/updateUser.jsp"/>
              <forward name="editfailure" path="/updateUser.do"/>
             

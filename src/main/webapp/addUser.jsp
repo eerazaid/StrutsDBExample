@@ -1,16 +1,51 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%> 
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
+<%@ page import="com.jwt.struts.form.UserRegisterForm" %>
 <html>
 <head>
     <title>Add New User</title>
 </head>
 <body>
     <h2>Add New User</h2>
+    <div style="color:red">
+        <html:errors />
+    </div>
+    <form action="userList.do">
+        <input type="submit" value="Back">
+    </form>
+
     <html:form action="/addUser">
-        First Name: <html:text property="firstName"/><br>
-        Last Name: <html:text property="lastName"/><br>
-        Email: <html:text property="email"/><br>
-        <html:submit value="Add User"/>
+        <label>
+            <bean:message key="label.user.firstName" /> :
+            <html:text property="firstName" size="25" />
+        </label>
+        <br>
+        <label>
+            <bean:message key="label.user.lastName" /> :
+            <html:text property="lastName" size="25" />
+        </label>
+        <br>
+        <label>
+            <bean:message key="label.user.email" /> :
+            <html:text property="email" size="25" />
+        </label>
+        <br>
+        <label>
+            <bean:message key="label.user.password" /> :
+            <html:text property="password" size="25" />
+        </label>
+        <br>
+        <label>
+            <bean:message key="label.user.confirmPassword" /> :
+            <html:text property="confirmPassword" size="25" />
+        </label>
+        <br>
+        <br>
+        <html:submit>
+            <bean:message key="label.user.button.submit" />
+        </html:submit>
     </html:form>
 </body>
 </html>

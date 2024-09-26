@@ -24,16 +24,16 @@ public class UserAddAction extends Action {
         UserRegisterDAO dao = new UserRegisterDAO();
 
         ActionErrors errors = new ActionErrors();
-     // Validate form fields
+        // Validate form fields
         if (userForm.getFirstName() == null || userForm.getFirstName().trim().isEmpty()) {
             errors.add("firstName", new ActionMessage("error.user.firstName.required"));
-        } else if (!userForm.getFirstName().matches("^[a-zA-Z\\s]+$")) {
+        } else if (!userForm.getFirstName().matches("^[a-zA-Z\\s/@'-]+$")) {
             errors.add("firstName", new ActionMessage("error.user.firstName.invalid"));
         }
 
         if (userForm.getLastName() == null || userForm.getLastName().trim().isEmpty()) {
             errors.add("lastName", new ActionMessage("error.user.lastName.required"));
-        } else if (!userForm.getLastName().matches("^[a-zA-Z\\s]+$")) {
+        } else if (!userForm.getLastName().matches("^[a-zA-Z\\s/@'-]+$")) {
             errors.add("lastName", new ActionMessage("error.user.lastName.invalid"));
         }
 
@@ -43,15 +43,24 @@ public class UserAddAction extends Action {
             errors.add("email", new ActionMessage("error.user.email.invalid"));
         }
 
+        if (userForm.getPassword() == null || userForm.getPassword().trim().isEmpty()) {
+            errors.add("password", new ActionMessage("error.user.password.required"));
+        }
+
+        if (userForm.getConfirmPassword() == null || userForm.getConfirmPassword().trim().isEmpty()) {
+            errors.add("confirmPassword", new ActionMessage("error.user.confirmPassword.required"));
+        } else if (!userForm.getPassword().equals(userForm.getConfirmPassword())) {
+            errors.add("confirmPassword", new ActionMessage("error.user.password.mismatch"));
+        }
 
         // If there are validation errors, save them and return to the input page
         if (!errors.isEmpty()) {
             saveErrors(request, errors);
-            return mapping.findForward("input"); // Return to input page with errors
+            return mapping.findForward("add"); // Return to input page with errors
         }
 
         // Insert the new user into the database
-        dao.insertData(userForm.getFirstName(), userForm.getLastName(), userForm.getEmail());
+        dao.insertData(userForm.getFirstName(), userForm.getLastName(), userForm.getEmail(), userForm.getPassword());
 
         // Fetch updated user list and set it in request
         List<UserRegisterForm> users = dao.getAllUsers();
@@ -60,7 +69,7 @@ public class UserAddAction extends Action {
         // Clear the form fields for the add user form
         userForm.reset(mapping, request);
 
-        // Redirect back to the user list page
-        return mapping.findForward("success");
+        // Redirect to userList action to prevent form resubmission
+        return new ActionForward("/userList.do", true); // Set the redirect flag to true
     }
 }

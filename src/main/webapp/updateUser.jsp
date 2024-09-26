@@ -10,15 +10,17 @@
 </head>
 <body>
     <h2>Update User</h2>
+    <form action="userList.do">
+		<input type="submit" value="Back">
+	</form>
     
-    <!-- Display any validation error messages -->
     <div style="color:red;">
         <html:errors/>
     </div>
 
     <!-- Form for updating user information -->
     <html:form action="/updateUser" method="post">
-        <html:hidden property="id"/> <!-- Hidden field for user ID -->
+        <html:hidden property="id"/>
         
         <label for="firstName">
             <bean:message key="label.user.firstName" /> :
@@ -33,6 +35,16 @@
         <label for="email">
             <bean:message key="label.user.email" /> :
             <html:text property="email" size="25" />
+        </label>
+        <br>
+        <label>
+            <bean:message key="label.user.password" /> :
+            <html:text property="password" size="25" />
+        </label>
+        <br>
+        <label>
+            <bean:message key="label.user.confirmPassword" /> :
+            <html:text property="confirmPassword" size="25" />
         </label>
         <br><br>
         

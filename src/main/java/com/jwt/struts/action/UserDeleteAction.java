@@ -15,6 +15,8 @@ public class UserDeleteAction extends Action {
         String userId = request.getParameter("id");
         UserRegisterDAO dao = new UserRegisterDAO();
         dao.deleteUser(Integer.parseInt(userId));
-        return mapping.findForward("success");
+        
+     // Redirect to userList action to prevent form resubmission
+        return new ActionForward("/userList.do", true);  
     }
 }

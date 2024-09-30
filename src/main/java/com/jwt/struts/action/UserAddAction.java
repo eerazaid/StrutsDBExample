@@ -24,6 +24,7 @@ public class UserAddAction extends Action {
         UserRegisterDAO dao = new UserRegisterDAO();
 
         ActionErrors errors = new ActionErrors();
+
         // Validate form fields
         if (userForm.getFirstName() == null || userForm.getFirstName().trim().isEmpty()) {
             errors.add("firstName", new ActionMessage("error.user.firstName.required"));
@@ -53,14 +54,22 @@ public class UserAddAction extends Action {
             errors.add("confirmPassword", new ActionMessage("error.user.password.mismatch"));
         }
 
-        // If there are validation errors, save them and return to the input page
+        if (userForm.getLoginId() == null || userForm.getLoginId().trim().isEmpty()) {
+            errors.add("loginId", new ActionMessage("error.user.loginId.required"));
+        } else if (!userForm.getLoginId().matches("^[a-zA-Z0-9_]+$")) {
+            errors.add("loginId", new ActionMessage("error.user.loginId.invalid"));
+        } else if (dao.isLoginIdExists(userForm.getLoginId())) {
+            errors.add("loginId", new ActionMessage("error.user.loginId.exists"));
+        }
+
+        // If there are  errors, save them and return to the input page
         if (!errors.isEmpty()) {
             saveErrors(request, errors);
             return mapping.findForward("add"); // Return to input page with errors
         }
 
-        // Insert the new user into the database
-        dao.insertData(userForm.getFirstName(), userForm.getLastName(), userForm.getEmail(), userForm.getPassword());
+        // Insert the new user into the database 
+        dao.insertData(userForm.getLoginId(), userForm.getFirstName(), userForm.getLastName(), userForm.getEmail(), userForm.getPassword());
 
         // Fetch updated user list and set it in request
         List<UserRegisterForm> users = dao.getAllUsers();

@@ -38,13 +38,13 @@
         </label>
         <br>
         <label>
-            <bean:message key="label.user.password" /> :
+            <bean:message key="label.user.currentPassword" /> :
             <html:text property="password" size="25" />
         </label>
         <br>
         <label>
-            <bean:message key="label.user.confirmPassword" /> :
-            <html:text property="confirmPassword" size="25" />
+            <bean:message key="label.user.newPassword" /> :
+            <html:text property="password" size="25" />
         </label>
         <br><br>
         

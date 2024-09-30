@@ -10,6 +10,7 @@ public class UserRegisterForm extends ActionForm {
     private String email;
     private String password;
     private String confirmPassword;
+    private String loginId;
 
     @Override
     public void reset(org.apache.struts.action.ActionMapping mapping, HttpServletRequest request) {
@@ -19,6 +20,8 @@ public class UserRegisterForm extends ActionForm {
         this.email = "";
         this.password = "";
         this.confirmPassword = "";
+        this.loginId = "";
+
     }
 
     public int getId() {
@@ -68,4 +71,12 @@ public class UserRegisterForm extends ActionForm {
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
     }
+
+	public String getLoginId() {
+		return loginId;
+	}
+
+	public void setLoginId(String loginId) {
+		this.loginId = loginId;
+	}
 }

@@ -6,46 +6,71 @@
 <html>
 <head>
     <title>Add New User</title>
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/styles.css">
 </head>
 <body>
-    <h2>Add New User</h2>
-    <div style="color:red">
-        <html:errors />
-    </div>
-    <form action="userList.do">
-        <input type="submit" value="Back">
-    </form>
+    <div class="wrapper">
+        <div class="registration_form">
+            <div class="title">
+                Add New User
+            </div>
+            <div style="color:red;">
+                <html:errors />
+            </div>
 
-    <html:form action="/addUser">
-        <label>
-            <bean:message key="label.user.firstName" /> :
-            <html:text property="firstName" size="25" />
-        </label>
-        <br>
-        <label>
-            <bean:message key="label.user.lastName" /> :
-            <html:text property="lastName" size="25" />
-        </label>
-        <br>
-        <label>
-            <bean:message key="label.user.email" /> :
-            <html:text property="email" size="25" />
-        </label>
-        <br>
-        <label>
-            <bean:message key="label.user.password" /> :
-            <html:text property="password" size="25" />
-        </label>
-        <br>
-        <label>
-            <bean:message key="label.user.confirmPassword" /> :
-            <html:text property="confirmPassword" size="25" />
-        </label>
-        <br>
-        <br>
-        <html:submit>
-            <bean:message key="label.user.button.submit" />
-        </html:submit>
-    </html:form>
+            
+
+            <div class="form_wrap">
+                <html:form action="/addUser">
+                    <div class="input_wrap">
+                        <label>
+                            <bean:message key="label.user.firstName" /> :
+                            <html:text property="firstName" size="25" />
+                        </label>
+                    </div>
+                    <div class="input_wrap">
+                        <label>
+                            <bean:message key="label.user.lastName" /> :
+                            <html:text property="lastName" size="25" />
+                        </label>
+                    </div>
+                    <div class="input_wrap">
+                        <label>
+                            <bean:message key="label.user.email" /> :
+                            <html:text property="email" size="25" />
+                        </label>
+                    </div>
+                    <div class="input_wrap">
+                        <label>
+                            <bean:message key="label.user.loginId" /> :
+                            <html:text property="loginId" size="25" />
+                        </label>
+                    </div>
+                    <div class="input_wrap">
+                        <label>
+                            <bean:message key="label.user.password" /> :
+                            <html:text property="password" size="25" />
+                        </label>
+                    </div>
+                    <div class="input_wrap">
+                        <label>
+                            <bean:message key="label.user.confirmPassword" /> :
+                            <html:text property="confirmPassword" size="25" />
+                        </label>
+                    </div>
+
+                    <div class="input_wrap">
+					    <input type="submit" value="<bean:message key='label.user.button.submit' />" class="submit_btn"/>
+					</div>
+					
+
+                </html:form>
+                
+                <form action="userList.do">
+                	<input type="submit" value="Back" class="submit_btn"/>
+            	</form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

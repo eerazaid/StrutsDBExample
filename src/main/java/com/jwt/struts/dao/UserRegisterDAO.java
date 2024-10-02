@@ -2,7 +2,6 @@ package com.jwt.struts.dao;
 
 import java.sql.*;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import com.jwt.struts.form.UserRegisterForm;
@@ -18,6 +17,8 @@ public class UserRegisterDAO {
     private static final String SELECT_LOGINID_SQL = "SELECT * FROM USER WHERE LOGINID = ?";
     private static final String UPDATE_USER_SQL = "UPDATE USER SET FIRST_NAME = ?, LAST_NAME = ?, EMAIL = ?, PASSWORD = ? WHERE ID = ?";
     private static final String DELETE_USER_SQL = "DELETE FROM USER WHERE ID = ?";
+    private static final String SELECT_PASSWORD_SQL = "SELECT PASSWORD FROM USER WHERE LOGINID = ?";
+    private static final String UPDATE_PASSWORD_SQL = "UPDATE USER SET PASSWORD = ? WHERE LOGINID = ?";
 
     static {
         try {
@@ -45,8 +46,72 @@ public class UserRegisterDAO {
              PreparedStatement pstmt = con.prepareStatement(SELECT_LOGINID_SQL)) {
             pstmt.setString(1, loginId);
             ResultSet rs = pstmt.executeQuery();
+            System.out.println("login id : " + loginId);
             return rs.next();  // Returns true if loginId exists
+            
+            
         }
+    }
+
+    // Verify current password
+    public boolean verifyCurrentPassword(String loginId, String currentPassword) throws Exception {
+        String storedHash = getPasswordHashByLoginId(loginId); // Get the stored hashed password
+        String hashedCurrentPassword = hashPasswordWithSalt(currentPassword, loginId); // Hash the input password with the same salt
+
+        // Logging for debugging
+        System.out.println("Current Password: " + currentPassword);
+
+        System.out.println("Stored Hash: " + storedHash);
+        System.out.println("Current Password Attempt: " + hashedCurrentPassword);
+        System.out.println("Is Current Password Valid: " + storedHash.equals(hashedCurrentPassword));
+
+        return storedHash.equals(hashedCurrentPassword);
+    }
+
+    // Method to get the hashed password by loginId
+    private String getPasswordHashByLoginId(String loginId) throws SQLException {
+        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement pstmt = con.prepareStatement(SELECT_PASSWORD_SQL)) {
+            pstmt.setString(1, loginId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("PASSWORD");
+            }
+            return null; // If no password is found
+        }
+    }
+
+ // Method to update password with validation that new password cannot be the same as the current password
+    public void updatePassword(String loginId, String newPassword, String confirmPassword) throws Exception {
+        // Step 1: Check if newPassword and confirmPassword match
+        if (!newPassword.equals(confirmPassword)) {
+            throw new Exception("New password and confirm password do not match.");
+        }
+
+        // Step 2: Get the current stored password hash
+        String currentPasswordHash = getPasswordHashByLoginId(loginId);
+
+        // Step 3: Hash the new password with loginId as salt
+        String hashedNewPassword = hashPasswordWithSalt(newPassword, loginId);
+        
+        // Step 4: Check if the new password hash is the same as the current password hash
+        if (currentPasswordHash.equals(hashedNewPassword)) {
+            throw new Exception("New password cannot be the same as the current password.");
+        }
+
+        // Step 5: Update the password in the database
+        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement pstmt = con.prepareStatement(UPDATE_PASSWORD_SQL)) {
+            pstmt.setString(1, hashedNewPassword);  // Store hashed password
+            pstmt.setString(2, loginId);  // Identify user by loginId
+            pstmt.executeUpdate();  // Update password in the database
+        }
+
+        // Logging for debugging
+        System.out.println("Password updated for loginId: " + loginId);
+        System.out.println("New password: " + newPassword);
+        System.out.println("Confirm new password: " + confirmPassword);
+        System.out.println("New Password Hash: " + hashedNewPassword);
     }
 
     // Get all users from the database
@@ -87,8 +152,6 @@ public class UserRegisterDAO {
             pstmt.setString(4, email);
             pstmt.setString(5, hashedPassword); 
             pstmt.executeUpdate();
-
-           
         }
     }
 

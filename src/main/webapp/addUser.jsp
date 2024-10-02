@@ -3,6 +3,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ page import="com.jwt.struts.form.UserRegisterForm" %>
+<jsp:include page="/inc/header.jsp" />
+
 <html>
 <head>
     <title>Add New User</title>
@@ -73,4 +75,7 @@
         </div>
     </div>
 </body>
+
+<jsp:include page="/inc/footer.jsp" />
+
 </html>

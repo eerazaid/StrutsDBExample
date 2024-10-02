@@ -10,6 +10,8 @@ public class UserRegisterForm extends ActionForm {
     private String email;
     private String password;
     private String confirmPassword;
+    private String newPassword;
+    private String currentPassword;
     private String loginId;
 
     @Override
@@ -20,6 +22,8 @@ public class UserRegisterForm extends ActionForm {
         this.email = "";
         this.password = "";
         this.confirmPassword = "";
+        this.currentPassword = "";
+        this.newPassword = "";
         this.loginId = "";
 
     }
@@ -78,5 +82,21 @@ public class UserRegisterForm extends ActionForm {
 
 	public void setLoginId(String loginId) {
 		this.loginId = loginId;
+	}
+
+	public String getCurrentPassword() {
+		return currentPassword;
+	}
+
+	public void setCurrentPassword(String currentPassword) {
+		this.currentPassword = currentPassword;
+	}
+
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
 	}
 }

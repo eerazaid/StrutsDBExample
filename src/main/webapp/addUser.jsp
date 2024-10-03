@@ -20,8 +20,6 @@
                 <html:errors />
             </div>
 
-            
-
             <div class="form_wrap">
                 <html:form action="/addUser">
                     <div class="input_wrap">
@@ -51,7 +49,7 @@
                     <div class="input_wrap">
                         <label>
                             <bean:message key="label.user.password" /> :
-                            <html:text property="password" size="25" />
+                            <html:text property="currentPassword" size="25" />
                         </label>
                     </div>
                     <div class="input_wrap">

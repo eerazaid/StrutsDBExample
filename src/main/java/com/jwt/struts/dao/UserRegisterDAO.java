@@ -92,27 +92,51 @@ public class UserRegisterDAO {
         String currentPasswordHash = getPasswordHashByLoginId(loginId);
 
         // Step 3: Hash the new password with loginId as salt
-        String hashedNewPassword = hashPasswordWithSalt(newPassword, loginId);
-        
+        String hashedNewPassword = hashPasswordWithSalt(newPassword.trim(), loginId.trim());
+
+        // Debugging: Log the inputs to ensure consistency
+        System.out.println("Login ID: " + loginId);
+        System.out.println("New Password: " + newPassword);
+        System.out.println("Trimmed New Password: " + newPassword.trim());	
+        System.out.println("Hashed New Password: " + hashedNewPassword);
+        System.out.println("Current Stored Hash: " + currentPasswordHash);
+
         // Step 4: Check if the new password hash is the same as the current password hash
-        if (currentPasswordHash.equals(hashedNewPassword)) {
+        if (currentPasswordHash != null && currentPasswordHash.equals(hashedNewPassword)) {
             throw new Exception("New password cannot be the same as the current password.");
         }
 
         // Step 5: Update the password in the database
-        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement pstmt = con.prepareStatement(UPDATE_PASSWORD_SQL)) {
-            pstmt.setString(1, hashedNewPassword);  // Store hashed password
-            pstmt.setString(2, loginId);  // Identify user by loginId
-            pstmt.executeUpdate();  // Update password in the database
+        try {
+        	Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+        	PreparedStatement pstmt = con.prepareStatement(UPDATE_PASSWORD_SQL);
+                pstmt.setString(1, hashedNewPassword);  // Store hashed password
+                pstmt.setString(2, loginId.trim());  // Identify user by loginId
+                pstmt.executeUpdate();  // Update password in the database
+                
+                System.out.println("Hashed New Password: " + hashedNewPassword);
+                
+                PreparedStatement pstmt2 = con.prepareStatement(SELECT_LOGINID_SQL);
+                pstmt2.setString(1, loginId);
+                ResultSet rs = pstmt2.executeQuery();
+                if (rs.next()) {
+                	 System.out.println("login id : " + rs.getString("LOGINID"));
+                	 System.out.println("password id : " + rs.getString("PASSWORD"));
+            
+                }
+               
+               
+        } catch (Exception e) {
+        	e.printStackTrace();
         }
+             
+        
 
-        // Logging for debugging
-        System.out.println("Password updated for loginId: " + loginId);
-        System.out.println("New password: " + newPassword);
-        System.out.println("Confirm new password: " + confirmPassword);
-        System.out.println("New Password Hash: " + hashedNewPassword);
+        // Log the success of the update
+        System.out.println("Password updated for loginId: " + loginId.trim());
     }
+
+
 
     // Get all users from the database
     public List<UserRegisterForm> getAllUsers() throws Exception {
@@ -127,7 +151,7 @@ public class UserRegisterDAO {
                 user.setFirstName(rs.getString("FIRST_NAME"));
                 user.setLastName(rs.getString("LAST_NAME"));
                 user.setEmail(rs.getString("EMAIL"));
-                user.setPassword(rs.getString("PASSWORD"));  
+                user.setCurrentPassword(rs.getString("PASSWORD"));  
                 user.setLoginId(rs.getString("LOGINID"));  
                 users.add(user);
             }
@@ -168,7 +192,7 @@ public class UserRegisterDAO {
                 user.setFirstName(rs.getString("FIRST_NAME"));
                 user.setLastName(rs.getString("LAST_NAME"));
                 user.setEmail(rs.getString("EMAIL"));
-                user.setPassword(rs.getString("PASSWORD"));
+                user.setCurrentPassword(rs.getString("PASSWORD"));
                 user.setLoginId(rs.getString("LOGINID"));  
             }
         }
@@ -184,7 +208,7 @@ public class UserRegisterDAO {
             pstmt.setString(3, user.getEmail());
 
             // Hash the password using the loginId as salt before updating
-            String hashedPassword = hashPasswordWithSalt(user.getPassword(), user.getLoginId());
+            String hashedPassword = hashPasswordWithSalt(user.getCurrentPassword(), user.getLoginId());
             pstmt.setString(4, hashedPassword);  // Update hashed password
 
             pstmt.setInt(5, id);

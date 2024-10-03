@@ -27,11 +27,10 @@ public class UserEditAction extends Action {
                 userForm.setLastName(user.getLastName());
                 userForm.setEmail(user.getEmail());
                 userForm.setLoginId(user.getLoginId());
-                
+
+                // Logging user details for debugging
                 System.out.println("Id : " + user.getId());
                 System.out.println("loginId : " + user.getLoginId());
-
-                
             } else {
                 // Handle case where user is not found
                 ActionErrors errors = new ActionErrors();
@@ -88,12 +87,12 @@ public class UserEditAction extends Action {
                 // Validate new password
                 if (newPassword == null || newPassword.trim().isEmpty()) {
                     errors.add("newPassword", new ActionMessage("error.user.newPassword.required"));
-                } 
+                }
 
                 // Validate confirm password
                 if (confirmPassword == null || confirmPassword.trim().isEmpty()) {
                     errors.add("confirmPassword", new ActionMessage("error.user.confirmPassword.required"));
-                } 
+                }
 
                 // Check if new password and confirm password match
                 if (newPassword != null && confirmPassword != null && !newPassword.equals(confirmPassword)) {
@@ -108,13 +107,17 @@ public class UserEditAction extends Action {
 
                 // Update the password in the database if validation passes
                 dao.updatePassword(userForm.getLoginId(), newPassword, confirmPassword);
+                System.out.println("Password updated successfully for loginId: " + userForm.getLoginId());
             }
 
             // Update the user with the form values excluding password
-            dao.updateUser(userForm, userForm.getId());
+          //  dao.updateUser(userForm, userForm.getId());
             userForm.reset(mapping, request);
             return mapping.findForward("success");
             
+            
         }
+        
+        
     }
 }

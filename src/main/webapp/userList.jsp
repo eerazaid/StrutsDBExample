@@ -45,7 +45,7 @@
                     <td><%= user.getFirstName() %></td>
                     <td><%= user.getLastName() %></td>
                     <td><%= user.getEmail() %></td>
-                    <td><%= user.getPassword() %></td>
+                    <td><%= user.getCurrentPassword() %></td>
                     <td class="actions">
                         <div class="button-group">
                             <form action="updateUser.do" method="get" class="inline-form">

@@ -8,7 +8,6 @@ public class UserRegisterForm extends ActionForm {
     private String firstName;
     private String lastName;
     private String email;
-    private String password;
     private String confirmPassword;
     private String newPassword;
     private String currentPassword;
@@ -20,7 +19,6 @@ public class UserRegisterForm extends ActionForm {
         this.firstName = "";
         this.lastName = "";
         this.email = "";
-        this.password = "";
         this.confirmPassword = "";
         this.currentPassword = "";
         this.newPassword = "";
@@ -60,13 +58,7 @@ public class UserRegisterForm extends ActionForm {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+   
 
     public String getConfirmPassword() {
         return confirmPassword;

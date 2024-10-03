@@ -44,13 +44,13 @@ public class UserAddAction extends Action {
             errors.add("email", new ActionMessage("error.user.email.invalid"));
         }
 
-        if (userForm.getPassword() == null || userForm.getPassword().trim().isEmpty()) {
+        if (userForm.getCurrentPassword() == null || userForm.getCurrentPassword().trim().isEmpty()) {
             errors.add("password", new ActionMessage("error.user.password.required"));
         }
 
         if (userForm.getConfirmPassword() == null || userForm.getConfirmPassword().trim().isEmpty()) {
             errors.add("confirmPassword", new ActionMessage("error.user.confirmPassword.required"));
-        } else if (!userForm.getPassword().equals(userForm.getConfirmPassword())) {
+        } else if (!userForm.getCurrentPassword().equals(userForm.getConfirmPassword())) {
             errors.add("confirmPassword", new ActionMessage("error.user.password.mismatch"));
         }
 
@@ -69,7 +69,7 @@ public class UserAddAction extends Action {
         }
 
         // Insert the new user into the database 
-        dao.insertData(userForm.getLoginId(), userForm.getFirstName(), userForm.getLastName(), userForm.getEmail(), userForm.getPassword());
+        dao.insertData(userForm.getLoginId(), userForm.getFirstName(), userForm.getLastName(), userForm.getEmail(), userForm.getCurrentPassword());
 
         // Fetch updated user list and set it in request
         List<UserRegisterForm> users = dao.getAllUsers();
